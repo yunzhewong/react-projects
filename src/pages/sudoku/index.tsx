@@ -11,13 +11,14 @@ const load1 = [[0, 0, 4, 0, 5, 0, 0, 0, 0],
                [0, 0, 9, 1, 8, 2, 0, 0, 3], 
                [0, 0, 0, 0, 6, 0, 1, 0, 0]]
 
-
+let stop = false;
+let delay = 50;
 
 export default function Home() {
     const [board, setBoard] = useState(createEmptyBoard());
     const [index, setIndex] = useState(-1);
+    const [delayText, setDelayText] = useState('50');
 
-    var delay = 50;
     return (
       <div className={styles.maincontainer}>
         <h1 className={styles.title}>Sudoku Solver</h1>
@@ -25,9 +26,15 @@ export default function Home() {
             {createBoardRender(board, setBoard, index)}
         </div>
         <div className={styles.buttoncontainer}>
-            <button className={styles.sudokubutton} onClick={()=>solveBoard(board, 0, setBoard, setIndex, delay)}>Solve</button>
-            <button className={styles.sudokubutton} onClick={()=>setBoard(createEmptyBoard())}>Clear</button>
+            <button className={styles.sudokubutton} onClick={()=>solveBoard(board, 0, setBoard, setIndex)}>Solve</button>
+            <button className={styles.sudokubutton} onClick={()=> setBoard(createEmptyBoard())}>Clear</button>
+            <button className={styles.sudokubutton} onClick={()=> stop=true}>Stop</button>
             <button className={styles.sudokubutton} onClick={()=>setBoard(load1)}>Load</button>
+        </div>
+        <div className={styles.slidercontainer}>
+            <h2 className={styles.slidertitle}>Delay</h2>
+            <input className={styles.slider} type="range" onChange={(e)=>{delay=parseInt(e.target.value); setDelayText(e.target.value)}}/>
+            <h2 className={styles.slidertext}>{delayText}</h2>
         </div>
       </div>
     )
@@ -104,19 +111,27 @@ function createEmptyBoard () {
     return board
 }
 
-async function solveBoard(board: Array<Array<number>>, currIndex:number, setBoard: Function, setIndex: Function, delay: number) {
+async function solveBoard(board: Array<Array<number>>, currIndex:number, setBoard: Function, setIndex: Function) {
     setIndex(currIndex - 1)
+
+    if (stop == true) {
+        setIndex(-1)
+        stop = false;
+        return 1;
+    }
     
     if (!boardValid(board)) {
         return 0;
     }
 
+    
     if (currIndex == 81) {
+        setIndex(-1)
         return 2;
     }
 
     if (board[Math.floor(currIndex / 9)][currIndex % 9] != 0) {
-        return solveBoard(board, currIndex + 1, setBoard, setIndex, delay)
+        return solveBoard(board, currIndex + 1, setBoard, setIndex)
     }
 
     for (let i = 1; i < 10; i++) {
@@ -125,7 +140,7 @@ async function solveBoard(board: Array<Array<number>>, currIndex:number, setBoar
 
         var result = await new Promise((resolve) => {
             setTimeout(() => {
-                resolve(solveBoard(modifiedBoard, currIndex + 1, setBoard, setIndex, delay))
+                resolve(solveBoard(modifiedBoard, currIndex + 1, setBoard, setIndex))
             }, delay)
         })
         
@@ -139,6 +154,7 @@ async function solveBoard(board: Array<Array<number>>, currIndex:number, setBoar
     }
     return 0;
 }
+
 
 function boardValid(board: Array<Array<number>>) : boolean {
     //rows

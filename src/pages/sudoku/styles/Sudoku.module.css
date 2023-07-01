@@ -22,7 +22,7 @@
 }
 
 .buttoncontainer {
-    margin: 20px auto;
+    margin: 10px auto;
 }
 
 .square {
@@ -51,4 +51,42 @@
     translate: 0 -2px;
     transition: box-shadow 1s;
     transition: translate 1s;
+}
+
+.slidercontainer {
+    display: flex;
+    justify-content: center;
+    background-color: #8c6371;
+    border-radius: 5px;
+    height: 50px;
+}
+
+.slidertitle {
+    color: white;
+    margin: auto 20px;
+}
+
+.slider {
+    appearance: none;
+    background-color: none;
+    width: 250px;
+    height: 20px;
+    margin: auto 20px;
+    padding: 5px 10px;
+    border-radius: 10px;
+}
+
+.slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background-color: #8c6371;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.slidertext {
+    width: 30px;
+    margin: auto 20px;
+    color: white;
 }
