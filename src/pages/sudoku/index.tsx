@@ -1,4 +1,4 @@
-import styles from './styles/Sudoku.module.css'
+import styles from '../../../styles/Sudoku.module.css'
 import {useState} from 'react'
 
 const load1 = [[0, 0, 4, 0, 5, 0, 0, 0, 0], 
