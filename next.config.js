@@ -4,6 +4,6 @@ const nextConfig = {
 }
 
 module.exports = {
-  basePath: '/react-projects',
-  assetPrefix: '/${react-projects}'
+  basePath: '/react-projects/',
+  assetPrefix: '/react-projects/'
 }
